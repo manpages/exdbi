@@ -8,6 +8,10 @@ defrecord DBI.Result, count: nil, columns: [], rows: [] do
   def zip(__MODULE__[columns: columns, rows: rows]) do
     lc row inlist rows, do: Enum.zip(columns, tuple_to_list(row))
   end
+
+  def index(column, __MODULE__[columns: columns]) do
+    Enum.find_index(columns, &1 == column)
+  end
 end
 
 defimpl Enumerable, for: DBI.Result do
