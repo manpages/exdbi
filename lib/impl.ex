@@ -17,6 +17,23 @@ defmodule DBI.Implementation do
         end
       end
 
+      def query_stream!(t, statement, bindings // []) do
+        stream(t, statement, bindings, &1, &2)
+      end
+
+      defp stream(t, statement, bindings, acc, fun) do
+        result = query!(t, statement, bindings)
+        stream(acc, fun, result)
+      end
+
+      defp stream(acc, _fun, DBI.Result[rows: []]) do
+        acc
+      end
+
+      defp stream(acc, fun, DBI.Result[rows: [h|t]] = result) do
+         fun.(h, acc) |> stream(fun, result.rows(t))
+      end
+
       Record.import DBI.Result, as: :result
 
     end
