@@ -17,7 +17,7 @@ defmodule DBI.Implementation do
         end
       end
 
-     Record.import DBI.Result, as: :result
+      Record.import DBI.Result, as: :result
 
     end
   end
