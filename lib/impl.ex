@@ -12,6 +12,13 @@ defmodule DBI.Implementation do
 
       def query!(t, statement, bindings) do
         case query(t, statement, bindings) do
+           list when is_list(list) ->
+             lc item inlist list do
+               case item do
+                 {:ok, result} -> result
+                 {:error, error} -> raise error
+               end
+             end
            {:ok, result} -> result
            {:error, error} -> raise error
         end
