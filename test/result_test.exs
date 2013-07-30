@@ -34,4 +34,18 @@ defmodule DBI.ResultTest do
     assert Enum.to_list(result) == rows
   end
 
+  test "getting keywordlist" do
+    result = DBI.Result.new()
+    assert result.keywords == []
+
+    result = DBI.Result.new(columns: ["col1", "col2", "col3"],
+                            rows: [{"r1", "r1", "r1"},
+                                   {"r2", "r2", "r2"},
+                                   {"r3", "r3", "r3"},
+                                  ])
+    assert result.keywords == [ [col1: "r1", col2: "r1", col3: "r1"], 
+                                [col1: "r2", col2: "r2", col3: "r2"], 
+                                [col1: "r3", col2: "r3", col3: "r3"] ]
+  end
+
 end

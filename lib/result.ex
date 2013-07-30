@@ -12,6 +12,15 @@ defrecord DBI.Result, count: nil, columns: [], rows: [] do
   def index(column, __MODULE__[columns: columns]) do
     Enum.find_index(columns, &1 == column)
   end
+
+  def keywords(result = __MODULE__[]) do
+    Enum.map(result, fn(row) ->
+      result.zip(row) |>
+      Enum.map(fn({key, value}) ->
+        {binary_to_atom(key), value}
+      end)
+    end)
+  end
 end
 
 defimpl Enumerable, for: DBI.Result do
